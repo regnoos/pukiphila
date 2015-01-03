@@ -1,0 +1,97 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+  <meta charset="utf-8" />
+  <title>Soonger | Music</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="{% static "js/jPlayer/jplayer.flat.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/animate.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/simple-line-icons.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/font.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "css/app.css" %}" type="text/css" />
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5shiv.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body class="bg-info dker">
+  <section id="content" class="m-t-lg wrapper-md animated fadeInDown">
+    <div class="container aside-xl">
+      <a class="navbar-brand block" href="/"><span class="h1 font-bold">Soonger</span></a>
+      <section class="m-b-lg">
+        <header class="wrapper text-center">
+          <strong>Sign up to find interesting thing</strong>
+        </header>
+          <form action="." method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                  {{ form.username }}
+                  {{ form.username.errors.as_text }}
+              </div>
+
+              <div class="form-group">
+                  {{ form.email }}
+                  {{ form.email.errors.as_text }}
+              </div>
+              <div class="form-group">
+                  {{ form.password1 }}
+                  {{ form.password1.errors.as_text }}
+              </div>
+              <div class="form-group">
+                  {{ form.password2 }}
+                  {{ form.password2.errors.as_text }}
+              </div>
+               <div class="form-group">
+              {% for radio in form.gender %}
+                  <div class="radio i-checks inline">
+                      <label class="radio-inline">
+                          {{ radio.tag }}
+                          <i></i>
+                          {{ radio.choice_label }}
+                      </label>
+                  </div>
+              {% endfor %}
+                   <div>{{ form.gender.errors.as_text }}</div>
+               </div>
+              <div class="checkbox i-checks m-b">
+                  <label>
+                      <input type="checkbox"><i></i> Agree the <a href="#">terms and policy</a>
+                  </label>
+              </div>
+              <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block">
+                  <span class="m-r-n-lg">Sign up</span>
+              </button>
+              <div class="line line-dashed"></div>
+              <p class="text-muted text-center">
+                  <small>Already have an account?</small> <a href="/signin/">Sign in</a>
+              </p>
+          </form>
+      </section>
+    </div>
+  </section>
+  <!-- footer -->
+  <footer id="footer">
+    <div class="text-center padder clearfix">
+      <p>
+        <small>Soonger &copy; 2014</small>
+      </p>
+    </div>
+  </footer>
+  <!-- / footer -->
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <!-- Bootstrap -->
+  <script src="{% static "js/bootstrap.js"%}"></script>
+  <!-- App -->
+  <script src="{% static "js/app.js"%}"></script>
+  <script src="{% static "js/slimscroll/jquery.slimscroll.min.js"%}"></script>
+  <script src="{% static "js/app.plugin.js"%}"></script>
+  <script type="text/javascript" src="{% static "js/jPlayer/jquery.jplayer.min.js"%}"></script>
+  <script type="text/javascript" src="{% static "js/jPlayer/add-on/jplayer.playlist.min.js"%}"></script>
+  <script type="text/javascript" src="{% static "js/jPlayer/demo.js" %}"></script>
+</body>
+</html>

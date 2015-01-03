@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="scrollable padder-lg" id="bjax-el">
+        <h2 class="font-thin m-b">Artistas</h2>
+        <div class="row row-sm">
+            {% for artists in object_list %}
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="item">
+                        <div class="pos-rlt">
+                            <div class="item-overlay opacity r r-2x bg-black">
+                                <div class="center text-center m-t-n">
+                                    <a href="{% url 'users:artist_profile' artists.username %}"><i class="fa fa-link i-2x"></i></a>
+                                </div>
+                            </div>
+                            {% if artists.photo %}
+                                <a href="#"><img src="{{ artists.photo.url }}" alt="" class="r r-2x img-full"></a>
+                            {% else %}
+                                <a href="#"><img src="{{ MEDIA_URL }}user/default.png" alt="" class="r r-2x img-full"></a>
+                            {% endif %}
+                        </div>
+                        <div class="padder-v">
+                            <a href="#" data-bjax="" data-target="#bjax-target" data-el="#bjax-el"
+                               data-replace="true" class="text-ellipsis">{{ artists.full_name }}</a>
+                            <a href="#" data-bjax="" data-target="#bjax-target" data-el="#bjax-el"
+                               data-replace="true" class="text-ellipsis text-xs text-muted">{{ album.owner }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+            <ul class="pagination pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="/artists?page={{ page_obj.previous_page_number }}"><i class="fa fa-chevron-left"></i></a></li>
+                {% endif %}
+                <li class="active"><a href="#">{{ page_obj.number }}</a></li>
+                {% if page_obj.has_next %}
+                    <li><a href="/artists?page={{ page_obj.next_page_number }}"><i class="fa fa-chevron-right"></i></a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </section>
+
+{% endblock %}

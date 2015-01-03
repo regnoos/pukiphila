@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="vbox" id="bjax-el">
+        <section class="scrollable padder-lg">
+        <h2 class="font-thin m-b">Albumes</h2>
+        <div class="row row-sm">
+            {% for album in albumes %}
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="item">
+                        <div class="pos-rlt">
+                            <div class="item-overlay opacity r r-2x bg-black">
+                                <div class="center text-center m-t-n">
+                                    <a href="{% url 'albumes:album_detail' album.id %}" data-target="#bjax-target" data-el="#bjax-el" data-replace="true"><i class="fa fa-link i-2x"></i></a>
+                                </div>
+                            </div>
+                            <a href="#"><img src="{{ album.thumb.url }}" alt="" class="r r-2x img-full"></a>
+                        </div>
+                        <div class="padder-v">
+                            <a href="{% url 'albumes:album_detail' album.id %}" data-target="#bjax-target" data-el="#bjax-el"
+                               data-replace="true" class="text-ellipsis">{{ album.name }}</a>
+                            <a href="{% url 'users:artist_profile' album.owner.username %}" data-bjax="" data-target="#bjax-target" data-el="#bjax-el"
+                               data-replace="true" class="text-ellipsis text-xs text-muted">{{ album.owner }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+            <ul class="pagination pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="/albums?page={{ page_obj.previous_page_number }}"><i class="fa fa-chevron-left"></i></a></li>
+                {% endif %}
+                <li class="active"><a href="#">{{ page_obj.number }}</a></li>
+                {% if page_obj.has_next %}
+                    <li><a href="/albums?page={{ page_obj.next_page_number }}"><i class="fa fa-chevron-right"></i></a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </section>
+    </section>
+{% endblock %}

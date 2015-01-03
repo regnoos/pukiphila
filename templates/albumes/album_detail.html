@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="hbox" id="bjax-el">
+        <section class="scrollable wrapper-lg">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="panel wrapper-lg">
+                        <div class="row">
+                            <div class="col-sm-5" >
+                                <img src="{{ album.thumb.url }}" class="img-full m-b r r-2x">
+                            </div>
+                            <div class="col-sm-7">
+                                <h2 class="m-t-none text-black">{{ album.name }}</h2>
+
+                                <div class="clearfix m-b-lg">
+                                    <a href="#" class="thumb-sm pull-left m-r">
+                                        <img src="{{ album.owner.photo.url }}" class="img-circle r" >
+                                    </a>
+
+                                    <div class="clear">
+                                        <a href="{% url 'users:artist_profile' album.owner.username %}"
+                                           class="text-info">{{ album.owner }}</a>
+                                        <small class="block text-muted">{{ album.owner.followers.count }} followers
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="m-b-lg">
+                                    <a href="#" class="btn btn-info">Play</a> <a href="#" class="btn btn-default">3
+                                    Comments</a>
+                                </div>
+                                <div>
+                                    Tags: {% for tag in tags %}
+                                    {% for t in tag %}
+                                        <a href="#" class="badge bg-light">{{ t.nombre }}</a>
+                                    {% endfor %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-t">
+                            <p>{{ album.description }}</p>
+                        </div>
+                        <h4 class="m-t-lg m-b">Song List</h4>
+                        <ul class="list-group list-group-lg">
+                            {% for song in songs %}
+                                <li class="list-group-item">
+                                    <div class="pull-right m-l">
+                                        <a href="#" class="m-r-sm"><i class="icon-plus"></i></a>
+                                    </div>
+                                    <a href="#" class="jp-play-me m-r-sm pull-left">
+                                        <i class="icon-control-play text"></i>
+                                        <i class="icon-control-pause text-active"></i>
+                                    </a>
+
+                                    <div class="clear text-ellipsis">
+                                        <span>{{ song.title }}</span>
+                                        <span class="text-muted"> -- 04:35</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Suggested Albums</div>
+                        <div class="panel-body">
+                            <article class="media">
+                                <a href="#" class="pull-left thumb-md m-t-xs">
+                                    <img src="images/m18.jpg">
+                                </a>
+
+                                <div class="media-body">
+                                    <a href="#" class="font-semibold">Bootstrap 3: What you need to know</a>
+
+                                    <div class="text-xs block m-t-xs"><a href="#">Travel</a> 2 minutes ago</div>
+                                </div>
+                            </article>
+                            <article class="media">
+                                <a href="#" class="pull-left thumb-md m-t-xs">
+                                    <img src="images/m19.jpg">
+                                </a>
+
+                                <div class="media-body">
+                                    <a href="#" class="font-semibold">Lorem ipsum dolor sit amet it.</a>
+
+                                    <div class="text-xs block m-t-xs"><a href="#">Design</a> 2 hours ago</div>
+                                </div>
+                            </article>
+                            <article class="media">
+                                <a href="#" class="pull-left thumb-md m-t-xs">
+                                    <img src="images/m20.jpg">
+                                </a>
+
+                                <div class="media-body">
+                                    <a href="#" class="font-semibold">Sed diam nonummy tincidunt ut laoreet</a>
+
+                                    <div class="text-xs block m-t-xs"><a href="#">MFC</a> 1 week ago</div>
+                                </div>
+                            </article>
+                            <article class="media">
+                                <a href="#" class="pull-left thumb-md m-t-xs">
+                                    <img src="images/m21.jpg">
+                                </a>
+
+                                <div class="media-body">
+                                    <a href="#" class="font-semibold">Lonummy nibh euismod sed laoreet</a>
+
+                                    <div class="text-xs block m-t-xs"><a href="#">MFC</a> 1 week ago</div>
+                                </div>
+                            </article>
+                            <article class="media">
+                                <a href="#" class="pull-left thumb-md m-t-xs">
+                                    <img src="images/m22.jpg">
+                                </a>
+
+                                <div class="media-body">
+                                    <a href="#" class="font-semibold">Mibh euismod tincidunt ut laoreet</a>
+
+                                    <div class="text-xs block m-t-xs"><a href="#">MFC</a> 1 week ago</div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <h3 class="font-thin">In this album</h3>
+                    <div class="row row-sm">
+                        {% for member in album.members.all %}
+                            <div class="col-xs-6 col-sm-3">
+                                <div class="item">
+                                    <div class="pos-rlt">
+                                        <div class="item-overlay opacity r r-2x bg-black">
+                                            <div class="center text-center m-t-n">
+                                                <a href="{% url 'users:artist_profile' member.username %}"><i class="fa fa-link i-2x"></i></a>
+                                            </div>
+                                        </div>
+                                        <a href="#"><img src="{{ member.photo.url }}" alt="" class="r r-2x img-full"></a>
+                                    </div>
+                                    <div class="padder-v">
+                                        <a href="{% url 'users:artist_profile' member.username %}" class="text-ellipsis">{{ member.full_name }}</a>
+                                        <a href="#" class="text-ellipsis text-xs text-muted">{{ member.followers.count }} followers</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
