@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section class="hbox stretch">
+   {% comment %} <section class="hbox stretch">
         <section>
             <section class="vbox">
                 <section class="scrollable padder-lg w-f-md" id="bjax-target">
@@ -23,7 +23,7 @@
                                 <audio title="Busted Chump"
                                        src="http://flatfull.com/themes/assets/musics/adg3com_bustedchump.mp3"
                                        preload="metadata" id="jp_audio_0"></audio>
-                                <video title="Busted Chump" style="width: 0px; height: 0px;"
+                                <video title="Busted Chump" style="width: 0; height: 0;"
                                        preload="metadata" id="jp_video_0"></video>
                             </div>
                             <div class="jp-gui">
@@ -145,5 +145,15 @@
                 </footer>
             </section>
         </section>
-    </section>
+    </section>{% endcomment %}
+    <h2 class="font-thin m-b">Bienvenido a Soonger
+        <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+          <span class="bar1 a1 bg-primary lter"></span>
+          <span class="bar2 a2 bg-info lt"></span>
+          <span class="bar3 a3 bg-success"></span>
+          <span class="bar4 a4 bg-warning dk"></span>
+          <span class="bar5 a5 bg-danger dker"></span>
+        </span>
+    </h2>
+
 {% endblock %}

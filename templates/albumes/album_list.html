@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section class="vbox" id="bjax-el">
-        <section class="scrollable padder-lg">
         <h2 class="font-thin m-b">Albumes</h2>
         <div class="row row-sm">
             {% for album in albumes %}
@@ -36,6 +34,4 @@
                 {% endif %}
             </ul>
         {% endif %}
-    </section>
-    </section>
 {% endblock %}
