@@ -175,14 +175,14 @@
                       </a>
                     </li>
                     <li >
-                      <a href="{% url "users:artist_list" %}" class="auto" data-target="#content" data-el="#bjax-el" data-replace="true">
+                      <a href="{% url "users:artist_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
                         <i class="icon-users icon text-primary">
                         </i>
                         <span>Artistas</span>
                       </a>
                     </li>
                     <li >
-                      <a href="{% url "albums:album_list" %}" class="auto" data-target="#content" data-el="#bjax-el" data-replace="true">
+                      <a href="{% url "albums:album_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
                         <i class="icon-disc icon text-primary">
                         </i>
                         <span>Albumes</span>
@@ -258,12 +258,15 @@
           </section>
         </aside>
         <!-- /.aside -->
-          <section id="content">
-            <section class="vbox" id="bjax-el">
-                <section class="scrollable padder-lg w-f-md">
-                   {% block content %}
+            <section class="vbox">
+                <section id="bjax-target" class="scrollable w-f-md">
+                    <section id="bjax-el">
+                        <section class="">
+                           {% block content %}
 
-                   {% endblock %}
+                           {% endblock %}
+                        </section>
+                    </section>
                 </section>
                 <footer class="footer bg-dark">
                     <div class="jp-video-270p" id="jp_container_N">
@@ -394,7 +397,7 @@
                         </div>
                     </div>
                 </footer>
-            </section>
+
               <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open"
                  data-target="#nav,html"></a>
           </section>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    <div class="padder-lg">
         <h2 class="font-thin m-b">Artistas</h2>
         <div class="row row-sm">
             {% for artists in object_list %}
@@ -40,6 +40,6 @@
                 {% endif %}
             </ul>
         {% endif %}
-
+    </div>
 
 {% endblock %}

@@ -105,7 +105,7 @@ Modernizr.addTest('ios7 ipad',function(){return!!navigator.userAgent.match(/iPad
 
   Bjax.prototype.backdrop = function(){
     this.$element.css('position','relative')
-    this.$backdrop = $('<div class="backdrop fade bg-white"></div>')
+    this.$backdrop = $('<div class="backdrop fade dk"></div>')
       .appendTo(this.$element);
     if(!this.options.backdrop) this.$backdrop.css('height', '2');
     this.$backdrop[0].offsetWidth; // force reflow

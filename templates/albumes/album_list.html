@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="padder-lg">
         <h2 class="font-thin m-b">Albumes</h2>
         <div class="row row-sm">
             {% for album in albumes %}
@@ -8,7 +9,7 @@
                         <div class="pos-rlt">
                             <div class="item-overlay opacity r r-2x bg-black">
                                 <div class="center text-center m-t-n">
-                                    <a href="{% url 'albumes:album_detail' album.id %}" data-target="#bjax-target" data-el="#bjax-el" data-replace="true"><i class="fa fa-link i-2x"></i></a>
+                                    <a href="{% url 'albumes:album_detail' album.id %}" data-target="#al" data-el="#bl"><i class="fa fa-link i-2x"></i></a>
                                 </div>
                             </div>
                             <a href="#"><img src="{{ album.thumb.url }}" alt="" class="r r-2x img-full"></a>
@@ -34,4 +35,5 @@
                 {% endif %}
             </ul>
         {% endif %}
+    </div>
 {% endblock %}
