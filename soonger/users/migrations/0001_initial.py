@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import django.utils.timezone
 import django.core.validators
-import apps.users.models
+import soonger.users.models
 from django.conf import settings
 import re
 import djorm_pgarray.fields
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True, verbose_name='active', help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.')),
                 ('full_name', models.CharField(verbose_name='full name', blank=True, max_length=256)),
                 ('bio', models.TextField(default='', verbose_name='biography', blank=True)),
-                ('photo', models.ImageField(upload_to=apps.users.models.get_user_file_path, verbose_name='photo', max_length=500, blank=True, null=True)),
+                ('photo', models.ImageField(upload_to=soonger.users.models.get_user_file_path, verbose_name='photo', max_length=500, blank=True, null=True)),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('is_staff', models.BooleanField(default=False)),
                 ('verificated', models.BooleanField(default=False)),

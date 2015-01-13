@@ -7,11 +7,11 @@ from django.utils import timezone
 
 from djorm_pgarray.fields import TextArrayField
 
-from apps.users.models import User
-from apps.permissions.permissions import ANON_PERMISSIONS, USER_PERMISSIONS
-from apps.users.models import Role
-from apps.base.utils.slug import slugify_uniquely
-from apps.base.utils.sequence import arithmetic_progression
+from soonger.users.models import User
+from soonger.permissions.permissions import ANON_PERMISSIONS, USER_PERMISSIONS
+from soonger.users.models import Role
+from soonger.base.utils.slug import slugify_uniquely
+from soonger.base.utils.sequence import arithmetic_progression
 
 
 class Membership(models.Model):

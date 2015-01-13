@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.users.admin import RoleInline
+from soonger.users.admin import RoleInline
 from . import models
 
 

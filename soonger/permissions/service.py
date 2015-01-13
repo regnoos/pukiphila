@@ -1,4 +1,4 @@
-from apps.albumes.models import Membership, Album
+from soonger.albumes.models import Membership, Album
 from .permissions import OWNERS_PERMISSIONS, MEMBERS_PERMISSIONS, ANON_PERMISSIONS, USER_PERMISSIONS
 
 

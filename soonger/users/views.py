@@ -7,7 +7,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core import urlresolvers
 from django.forms.util import ErrorList, format_html
-from apps.albumes.models import Membership
+from soonger.albumes.models import Membership
 
 from .models import User
 from .forms import UserCreationForm

@@ -13,11 +13,11 @@ from django.dispatch import receiver
 
 from djorm_pgarray.fields import TextArrayField
 
-from apps.genres.models import Genre
-from apps.country.models import Country
-from apps.base.utils.iterators import split_by_n
-from apps.base.utils.slug import slugify_uniquely
-from apps.permissions.permissions import MEMBERS_PERMISSIONS
+from soonger.genres.models import Genre
+from soonger.country.models import Country
+from soonger.base.utils.iterators import split_by_n
+from soonger.base.utils.slug import slugify_uniquely
+from soonger.permissions.permissions import MEMBERS_PERMISSIONS
 
 
 def get_user_file_path(instance, filename):

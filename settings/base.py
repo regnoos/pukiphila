@@ -8,12 +8,12 @@ BASE_DIR = Path(__file__).ancestor(3)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x(-ah=ymsgs&-y4$sdl!_&g79_&a(ir+mdp-yb8(hny7bckg$^'
-
-from django.core.urlresolvers import reverse_lazy
-
-LOGIN_URL = reverse_lazy('users:signin')
-LOGIN_REDIRECT_URL = reverse_lazy('home')
-LOGOUT_URL = reverse_lazy('users:logout')
+#
+# from django.core.urlresolvers import reverse_lazy
+#
+# LOGIN_URL = reverse_lazy('users:signin')
+# LOGIN_REDIRECT_URL = reverse_lazy('home')
+# LOGOUT_URL = reverse_lazy('users:logout')
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -27,26 +27,26 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
 
     # Internal apps
-    'apps.home',
-    'apps.base',
-    'apps.permissions',
-    'apps.country',
-    'apps.genres',
-    'apps.users',
-    'apps.albumes',
-    'apps.songs',
+    'soonger.home',
+    'soonger.base',
+    'soonger.permissions',
+    'soonger.country',
+    'soonger.genres',
+    'soonger.users',
+    'soonger.albumes',
+    'soonger.songs',
 
 )
 
-TEMPLATE_LOADERS = TL + (
-    'django.template.loaders.eggs.Loader',
-)
+# TEMPLATE_LOADERS = TL + (
+#     'django.template.loaders.eggs.Loader',
+# )
 
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.csrf',
-    'django.core.context_processors.request',
-    # 'apps.utils.context_processors.home_menu',
-)
+# TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+#     'django.core.context_processors.csrf',
+#     'django.core.context_processors.request',
+#     # 'apps.utils.context_processors.home_menu',
+# )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -54,9 +54,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Soonger.urls'
+ROOT_URLCONF = 'soonger.urls'
 
-WSGI_APPLICATION = 'Soonger.wsgi.application'
+WSGI_APPLICATION = 'soonger.wsgi.application'
 
 AUTH_USER_MODEL = "users.User"
 

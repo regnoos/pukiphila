@@ -5,7 +5,7 @@ from .views import UserProfileView, ArtistProfileView, ArtistListView, UserListe
 
 
 urlpatterns = patterns('',
-                       url(r'^signup/$', 'apps.users.views.signup', name='signup'),
+                       url(r'^signup/$', 'soonger.users.views.signup', name='signup'),
                        url(r'^signin/$', 'django.contrib.auth.views.login',
                            {'template_name': 'users/signin.html'}, name='signin'),
                        url(r'^logout/$', 'django.contrib.auth.views.logout_then_login',

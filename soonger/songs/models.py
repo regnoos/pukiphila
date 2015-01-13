@@ -1,8 +1,8 @@
 from django.db import models
 
-from apps.users.models import User
-from apps.albumes.models import Album
-from apps.genres.models import Genre
+from soonger.users.models import User
+from soonger.albumes.models import Album
+from soonger.genres.models import Genre
 
 
 class Tag(models.Model):

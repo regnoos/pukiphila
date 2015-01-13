@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 
 from .models import Album
-from apps.songs.models import Song
+from soonger.songs.models import Song
 
 
 class AlbumListView(ListView):
