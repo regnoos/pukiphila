@@ -1,7 +1,7 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -133,3 +133,23 @@ class UserProfileView(DetailView):
     model = User
     context_object_name = 'user'
     slug_field = 'username'
+
+
+class UserListenView(TemplateView):
+    template_name = 'users/user_listen.html'
+
+
+class UserVideoView(TemplateView):
+    template_name = 'users/user_videos.html'
+
+
+class UserVideoDetailView(TemplateView):
+    template_name = 'users/video_detail.html'
+
+
+class EventListView(TemplateView):
+    template_name = 'users/event_list.html'
+
+
+class GenreListView(TemplateView):
+    template_name = 'users/genre_list.html'

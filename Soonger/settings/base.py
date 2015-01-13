@@ -1,6 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from unipath import Path
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP, TEMPLATE_LOADERS as TL, STATICFILES_FINDERS as SF
 BASE_DIR = Path(__file__).ancestor(3)
 
 # Quick-start development settings - unsuitable for production
@@ -9,20 +9,24 @@ BASE_DIR = Path(__file__).ancestor(3)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x(-ah=ymsgs&-y4$sdl!_&g79_&a(ir+mdp-yb8(hny7bckg$^'
 
-DJANGO_APPS = (
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_URL = reverse_lazy('users:signin')
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_URL = reverse_lazy('users:logout')
+
+INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-)
+    # 'django.contrib.admin',
 
-THIRD_PARTY_APPS = (
+    # Third party apps
     'autofixture',
-)
+    'rest_framework',
+    'rest_framework.authtoken',
 
-LOCAL_APPS = (
+    # Internal apps
     'apps.home',
     'apps.base',
     'apps.permissions',
@@ -31,31 +35,22 @@ LOCAL_APPS = (
     'apps.users',
     'apps.albumes',
     'apps.songs',
+
 )
-SAMPLEDATAHELPER_SEED = 123456789
-SAMPLEDATAHELPER_MODELS = [
-    {'model': 'apps.users', 'number': 5, }
-]
-from django.core.urlresolvers import reverse_lazy
 
-LOGIN_URL = reverse_lazy('users:signin')
-LOGIN_REDIRECT_URL = reverse_lazy('home')
-LOGOUT_URL = reverse_lazy('users:logout')
-
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+TEMPLATE_LOADERS = TL + (
+    'django.template.loaders.eggs.Loader',
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.csrf',
+    'django.core.context_processors.request',
     # 'apps.utils.context_processors.home_menu',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 

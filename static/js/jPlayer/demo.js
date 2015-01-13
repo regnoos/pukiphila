@@ -98,7 +98,7 @@ $(document).ready(function(){
         m4v: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.m4v",
         ogv: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.ogv",
         webmv: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.webm",
-        poster: "images/m41.jpg"
+        poster: "http://localhost:8000/static/images/m40.jpg"
       });
     },
     swfPath: "js",

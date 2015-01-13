@@ -18,6 +18,7 @@
     <script src="js/ie/respond.min.js"></script>
     <script src="js/ie/excanvas.js"></script>
   <![endif]-->
+
 </head>
 <body class="">
   <section class="vbox">
@@ -151,25 +152,25 @@
                       </a>
                     </li>
                     <li>
-                      <a href="genres.html">
+                      <a href="{% url "users:genre_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
                         <i class="icon-music-tone icon text-primary"></i>
                         <span class="font-bold">Generos</span>
                       </a>
                     </li>
                     <li>
-                      <a href="events.html">
+                      <a href="{% url "users:event_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
                         <i class="icon-calendar icon text-primary"></i>
                         <span class="font-bold">Eventos</span>
                       </a>
                     </li>
                     <li>
-                      <a href="listen.html">
-                        <i class="icon-earphones icon  text-primary"></i>
+                      <a href="{% url "users:user_listen" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
+                        <i class="icon-earphones icon text-primary"></i>
                         <span class="font-bold">Escucho</span>
                       </a>
                     </li>
                     <li>
-                      <a href="video.html" data-target="#content" data-el="#bjax-el" data-replace="true">
+                      <a href="{% url "users:user_videos" %}" data-target="#content" data-el="#bjax-el" data-replace="true">
                         <i class="icon-film icon  text-primary"></i>
                         <span class="font-bold">Videos</span>
                       </a>
@@ -259,15 +260,11 @@
         </aside>
         <!-- /.aside -->
             <section class="vbox">
-                <section id="bjax-target" class="scrollable w-f-md">
-                    <section id="bjax-el">
-                        <section class="">
-                           {% block content %}
 
-                           {% endblock %}
-                        </section>
-                    </section>
-                </section>
+               {% block content %}
+
+               {% endblock %}
+
                 <footer class="footer bg-dark">
                     <div class="jp-video-270p" id="jp_container_N">
                         <div class="jp-type-playlist">
@@ -410,6 +407,8 @@
   <!-- App -->
   <script src="{% static "js/app.js"%}"></script>
   <script src="{% static "js/slimscroll/jquery.slimscroll.min.js"%}"></script>
+  <script src="{% static "js/masonry/tiles.min.js"%}"></script>
+  <script src="{% static "js/masonry/demo.js"%}"></script>
   <script src="{% static "js/app.plugin.js"%}"></script>
   <script type="text/javascript" src="{% static "js/jPlayer/jquery.jplayer.min.js"%}"></script>
   <script type="text/javascript" src="{% static "js/jPlayer/add-on/jplayer.playlist.min.js"%}"></script>
