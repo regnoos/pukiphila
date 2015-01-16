@@ -19,7 +19,7 @@ class Song(models.Model):
     artist = models.ManyToManyField(User, verbose_name='artists', related_name='featuring')
     releasedate = models.DateField(verbose_name='año')
     tags = models.ManyToManyField(Tag, verbose_name='tags', related_name='songs')
-    album = models.ForeignKey(Album, related_name='song', blank=True, null=True)
+    album = models.ForeignKey(Album, related_name='songs', blank=True, null=True)
     created = models.DateField(auto_now_add=True)
     genre = models.ManyToManyField(Genre, verbose_name='genero', related_name='genres')
     hits = models.IntegerField(blank=True, null=True)

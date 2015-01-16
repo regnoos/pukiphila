@@ -18,8 +18,10 @@ SECRET_KEY = 'x(-ah=ymsgs&-y4$sdl!_&g79_&a(ir+mdp-yb8(hny7bckg$^'
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    "django.contrib.sessions",
+    "django.contrib.messages",
     'django.contrib.staticfiles',
-    # 'django.contrib.admin',
+    'django.contrib.admin',
 
     # Third party apps
     'autofixture',
@@ -52,6 +54,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Only needed by django admin
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    "django.contrib.messages.middleware.MessageMiddleware",
 )
 
 ROOT_URLCONF = 'soonger.urls'

@@ -1,29 +1,12 @@
-from django.views.generic import ListView, DetailView
+from rest_framework import viewsets
+
+from soonger.base.api.mixins import DefaultsMixin
 
 from .models import Album
-from soonger.songs.models import Song
+from .serializers import AlbumSerializer
 
 
-class AlbumListView(ListView):
-    model = Album
-    context_object_name = 'albumes'
-
-    paginate_by = 12
-
-
-class AlbumDetailView(DetailView):
-    model = Album
-    context_object_name = 'album'
-
-    def get_context_data(self, **kwargs):
-        context = super(AlbumDetailView, self).get_context_data(**kwargs)
-        songs = Song.objects.filter(album=context['object']).order_by('created')
-        tags = [song.tags.all() for song in songs]
-
-        # users = User.objects.filter(members=context['object'])
-        # albums = [user.albumes.all() for user in users]
-
-        context['tags'] = tags
-        context['songs'] = songs
-
-        return context
+class AlbumViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """API endpoint for listing and creating salbums."""
+    queryset = Album.objects.order_by('name')
+    serializer_class = AlbumSerializer
