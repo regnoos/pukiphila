@@ -6,7 +6,7 @@
   <title>Soonger | Music!</title>
   <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <link rel="stylesheet" href="{% static "js/jPlayer/jplayer.flat.css" %}" type="text/css" />
+  <link rel="stylesheet" href="{% static "vendor/jPlayer/jplayer.flat.css" %}" type="text/css" />
   <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" type="text/css" />
   <link rel="stylesheet" href="{% static "css/animate.css" %}" type="text/css" />
   <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}" type="text/css" />
@@ -14,47 +14,130 @@
   <link rel="stylesheet" href="{% static "css/font.css" %}" type="text/css" />
   <link rel="stylesheet" href="{% static "css/app.css" %}" type="text/css" />
     <!--[if lt IE 9]>
-    <script src="js/ie/html5shiv.js"></script>
-    <script src="js/ie/respond.min.js"></script>
-    <script src="js/ie/excanvas.js"></script>
+    <script src="{% static "vendor/ie/html5shiv.js" %}"></script>
+    <script src="{% static "vendor/ie/respond.min.js" %}"></script>
+    <script src="{% static "vendor/ie/excanvas.js" %}"></script>
   <![endif]-->
-
 </head>
 <body class="">
-  <section class="vbox">
-    <header class="bg-primary dk header header-md navbar navbar-fixed-top-xs">
-      <div class="navbar-header aside bg-primary dk">
-        <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
-          <i class="icon-list"></i>
-        </a>
-        <a href="{% url "home" %}" class="navbar-brand text-lt">
-          <i class="icon-earphones"></i>
-          <img src="{% static "images/logo.png" %}" alt="." class="hide">
-          <span class="hidden-nav-xs m-l-sm">Soonger</span>
-        </a>
-        <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
-          <i class="icon-settings"></i>
-        </a>
-      </div>
-        <ul class="nav navbar-nav hidden-xs">
-        <li>
-          <a href="#nav" data-toggle="class:nav-xs" class="text-muted">
-            <i class="fa fa-indent text"></i>
-            <i class="fa fa-dedent text-active"></i>
-          </a>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-sm bg-white btn-icon"><i class="fa fa-search"></i></button>
-            </span>
-            <input type="text" class="form-control input-sm no-border" placeholder="Search songs, albums...">
-          </div>
+    <script type="text/html" id="home_template">
+        <h2 class="font-thin m-b">Albumes</h2>
+        <button class="btn btn-default m-b">Nuevo Album</button>
+        <div class="row row-sm">
+            <% if(albums !== null) { %>
+                <% _.each(albums.models, function (album) { %>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                        <div class="item">
+                            <div class="pos-rlt">
+                                <div class="item-overlay opacity r r-2x bg-black">
+                                    <div class="center text-center m-t-n">
+                                        <a href="#album/<%- album.get('id') %>"><i class="fa fa-link i-2x"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#"><img src="<%- album.get('thumb') %>" alt="" class="r r-2x img-full"></a>
+                            </div>
+                            <div class="padder-v">
+                                <a href="#album/<%- album.get('id') %>" class="text-ellipsis"><%- album.get('name') %></a>
+                                <a href="#" class="text-ellipsis text-xs text-muted"><%- album.get('owner').full_name %></a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <h3 class="loading">Cargando...</h3>
+            <% } %>
         </div>
-      </form>
-        {% if user.is_authenticated %}
+    </script>
+
+    <script type="text/html" id="login_template2">
+        <form action="." method="post">
+          <div class="form-group">
+            <input id="id_username" type="text" name="username" placeholder="Username" class="form-control input-lg text-center no-border" autofocus>
+              <label for="id_username"></label>
+          </div>
+          <div class="form-group">
+             <input id="id_password" type="password" name="password" placeholder="Password" class="form-control input-lg text-center no-border">
+                <label for="id_password"></label>
+          </div>
+          <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block"><span class="m-r-n-lg">Sign in</span></button>
+          <div class="text-center m-t m-b"><a href="#"><small>Forgot password?</small></a></div>
+          <div class="line line-dashed"></div>
+          <p class="text-muted text-center"><small>Do not have an account?</small> <a href="/signup/">Create an account</a></p>
+        </form>
+    </script>
+
+    <script type="text/html" id="login_template">
+        <section class="m-t-lg wrapper-md animated fadeInUp">
+            <div class="container aside-xl">
+                <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">Soonger</span></a>
+                <section class="m-b-lg">
+                    <header class="wrapper text-center">
+                        <strong>Sign in to get in touch</strong>
+                    </header>
+                    <form action="." method="post">
+                        <div class="form-group">
+                            <input id="id_username" type="text" name="username" placeholder="Username" class="form-control input-lg text-center no-border" autofocus>
+                            <label for="id_username"></label>
+                        </div>
+                        <div class="form-group">
+                            <input id="id_password" type="password" name="password" placeholder="Password" class="form-control input-lg text-center no-border">
+                            <label for="id_password"></label>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-primary lt b-primary b-2x btn-block">Sign in</button>
+                        <div class="text-center m-t m-b"><a href="#">
+                            <small>Forgot password?</small>
+                        </a></div>
+                        <div class="line line-dashed"></div>
+                        <p class="text-muted text-center">
+                            <small>Do not have an account?</small>
+                            <a href="/signup/">Create an account</a></p>
+                    </form>
+                </section>
+            </div>
+        </section>
+        <footer id="footer">
+            <div class="text-center padder">
+                <p>
+                    <small>Soonger &copy; 2014</small>
+                </p>
+            </div>
+        </footer>
+    </script>
+
+    <script type="text/html" id="header-template">
+        <% if (authenticated) { %>
+        <header class="bg-black lt header header-md navbar navbar-fixed-top-xs">
+          <div class="navbar-header aside bg-primary dk">
+            <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+              <i class="icon-list"></i>
+            </a>
+            <a href="#" class="navbar-brand text-lt">
+              <img src="{% static "images/logo.png" %}" alt=".">
+              <span class="hidden-nav-xs m-l-sm">Soonger</span>
+            </a>
+            <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+              <i class="icon-settings"></i>
+            </a>
+          </div>
+            <ul class="nav navbar-nav hidden-xs">
+            <li>
+              <a href="#nav" data-toggle="class:nav-xs" class="text-muted">
+                <i class="fa fa-indent text"></i>
+                <i class="fa fa-dedent text-active"></i>
+              </a>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-sm bg-white btn-icon"><i class="fa fa-search"></i></button>
+                </span>
+                <input type="text" class="form-control input-sm no-border" placeholder="Buscar songs, albums...">
+              </div>
+            </div>
+          </form>
+
             <div class="navbar-right ">
                 <ul class="nav navbar-nav m-n hidden-xs nav-user user">
                     <li class="hidden-xs">
@@ -70,18 +153,18 @@
                                 <div class="list-group list-group-alt">
                                     <a href="#" class="media list-group-item">
                                         <span class="pull-left thumb-sm">
-                                          <img src="images/a0.png" alt="..." class="img-circle">
+                                            <img src="{% static "images/a0.png" %}" alt="..." class="img-circle">
                                         </span>
                                         <span class="media-body block m-b-none">
-                                          Use awesome animate.css<br>
-                                          <small class="text-muted">10 minutes ago</small>
+                                        Use awesome animate.css<br>
+                                        <small class="text-muted">10 minutes ago</small>
                                         </span>
                                     </a>
                                     <a href="#" class="media list-group-item">
-                                      <span class="media-body block m-b-none">
+                                        <span class="media-body block m-b-none">
                                         1.0 initial released<br>
                                         <small class="text-muted">1 hour ago</small>
-                                      </span>
+                                        </span>
                                     </a>
                                 </div>
                                 <div class="panel-footer text-sm">
@@ -94,13 +177,12 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle clear" data-toggle="dropdown">
-                          <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
-                            {% if user.photo %}
-                              <img src="{{ user.photo.url }}" alt="...">
-                            {% endif %}
-
-                          </span>
-                            {{ user.username }} <b class="caret"></b>
+                            <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+{#                            {% if user.photo %}#}
+                                <img src="#" alt="...">
+{#                            {% endif %}#}
+                            </span>
+                            Carlos R. <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight">
                             <li>
@@ -108,7 +190,7 @@
                                 <a href="#">Settings</a>
                             </li>
                             <li>
-                                <a href="{% url 'users:user_profile' user.username %}">Profile</a>
+                                <a href="#">Profile</a>
                             </li>
                             <li>
                                 <a href="#">
@@ -117,301 +199,346 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="docs.html">Help</a>
+                                <a href="#">Help</a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="{% url 'users:logout' %}">Logout</a>
+                                <a id="logout" href="">Logout</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </div>
-        {% endif %}
-    </header>
-    <section>
-      <section class="hbox stretch">
+
+        </header>
+        <% } %>
+    </script>
+
+    <script type="text/html" id="new_album_template">
+        <form action="" method="post">
+            <label for="id_name">Album Name</label>
+            <input id="id_name" type="text" name="name" maxlength="100" required/>
+            <label for="id_end">End Date</label>
+            <input id="id_end" type="date" name="end"/>
+            <label for="id_description">Description</label>
+            <textarea id="id_description" name="description" cols="50"></textarea>
+            <button class="cancel">Cancel</button>
+            <button type="submit">Create</button>
+        </form>
+    </script>
+
+    <script type="text/html" id="album_template">
+        <% if (album !== null) { %>
+            <% if (!album.invalid) %>
+                <h2><%- album.get('name') %></h2>
+                <span class="due-date">Due <%- album.get('name') %></span>
+                <p class="description"><%- album.get('description') %></p>
+                <div class="songs"></div>
+            <% } else { %>
+                <h1>Album <%- album.get('id') %> not found.</h1>
+            <% } %>
+        <% } else { %>
+            <h1 class="loading">Loading...</h1>
+        <% } %>
+    </script>
+
+
+    <section class="vbox">
+        <section>
+            <section class="hbox stretch">
         <!-- .aside -->
-        <aside class="bg-black dk aside hidden-print nav-xs" id="nav">
-          <section class="vbox">
-            <section class="w-f-md scrollable">
-              <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
+{#        <aside class="bg-black dk aside hidden-print nav-xs" id="nav">#}
+{#          <section class="vbox">#}
+{#            <section class="w-f-md scrollable">#}
+{#              <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">#}
 
 
 
                 <!-- nav -->
-                <nav class="nav-primary hidden-xs">
-                  <ul class="nav bg clearfix">
-                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
-                      Discover
-                    </li>
-                    <li>
-                      <a href="{% url "home" %}">
-                        <i class="icon-like icon text-primary"></i>
-                        <span class="font-bold">Top</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url "users:genre_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-music-tone icon text-primary"></i>
-                        <span class="font-bold">Generos</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url "users:event_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-calendar icon text-primary"></i>
-                        <span class="font-bold">Eventos</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url "users:user_listen" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-earphones icon text-primary"></i>
-                        <span class="font-bold">Escucho</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url "users:user_videos" %}" data-target="#content" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-film icon  text-primary"></i>
-                        <span class="font-bold">Videos</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="{% url "users:artist_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-users icon text-primary">
-                        </i>
-                        <span>Artistas</span>
-                      </a>
-                    </li>
-                    <li >
-                      <a href="{% url "albums:album_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">
-                        <i class="icon-disc icon text-primary">
-                        </i>
-                        <span>Albumes</span>
-                      </a>
-                    </li>
-                    <li class="m-b hidden-nav-xs"></li>
-                  </ul>
-                  <ul class="nav text-sm">
-                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
-                      <span class="pull-right"><a href="#"><i class="icon-plus i-lg"></i></a></span>
-                      Playlist
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i class="icon-music-tone icon"></i>
-                        <span>Hip-Pop</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i class="icon-playlist icon text-success-lter"></i>
-                        <b class="badge bg-success dker pull-right">9</b>
-                        <span>Jazz</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+{#                <nav class="nav-primary hidden-xs">#}
+{#                  <ul class="nav bg clearfix">#}
+{#                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">#}
+{#                      Discover#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="{% url "home" %}">#}
+{#                        <i class="icon-like icon text-primary"></i>#}
+{#                        <span class="font-bold">Top</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="{% url "users:genre_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-music-tone icon text-primary"></i>#}
+{#                        <span class="font-bold">Generos</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="{% url "users:event_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-calendar icon text-primary"></i>#}
+{#                        <span class="font-bold">Eventos</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="{% url "users:user_listen" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-earphones icon text-primary"></i>#}
+{#                        <span class="font-bold">Escucho</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="{% url "users:user_videos" %}" data-target="#content" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-film icon  text-primary"></i>#}
+{#                        <span class="font-bold">Videos</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li >#}
+{#                      <a href="{% url "users:artist_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-users icon text-primary">#}
+{#                        </i>#}
+{#                        <span>Artistas</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li >#}
+{#                      <a href="{% url "albums:album_list" %}" class="auto" data-target="#bjax-target" data-el="#bjax-el" data-replace="true">#}
+{#                        <i class="icon-disc icon text-primary">#}
+{#                        </i>#}
+{#                        <span>Albumes</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li class="m-b hidden-nav-xs"></li>#}
+{#                  </ul>#}
+{#                  <ul class="nav text-sm">#}
+{#                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">#}
+{#                      <span class="pull-right"><a href="#"><i class="icon-plus i-lg"></i></a></span>#}
+{#                      Playlist#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="#">#}
+{#                        <i class="icon-music-tone icon"></i>#}
+{#                        <span>Hip-Pop</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                      <a href="#">#}
+{#                        <i class="icon-playlist icon text-success-lter"></i>#}
+{#                        <b class="badge bg-success dker pull-right">9</b>#}
+{#                        <span>Jazz</span>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                  </ul>#}
+{#                </nav>#}
                 <!-- / nav -->
-              </div>
-            </section>
-
-            <footer class="footer hidden-xs no-padder text-center-nav-xs">
-              <div class="bg hidden-xs ">
-                  <div class="dropdown dropup wrapper-sm clearfix">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <span class="thumb-sm avatar pull-left m-l-xs">
-                        <img src="{% static "images/a3.png" %}" class="dker" alt="...">
-                        <i class="on b-black"></i>
-                      </span>
-                      <span class="hidden-nav-xs clear">
-                        <span class="block m-l">
-                          <strong class="font-bold text-lt">John.Smith</strong>
-                          <b class="caret"></b>
-                        </span>
-                        <span class="text-muted text-xs block m-l">Art Director</span>
-                      </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight aside text-left">
-                      <li>
-                        <span class="arrow bottom hidden-nav-xs"></span>
-                        <a href="#">Settings</a>
-                      </li>
-                      <li>
-                        <a href="profile.html">Profile</a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span class="badge bg-danger pull-right">3</span>
-                          Notifications
-                        </a>
-                      </li>
-                      <li>
-                        <a href="docs.html">Help</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                        <a href="modal.lockme.html" data-toggle="ajaxModal" >Logout</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-            </footer>
-          </section>
-        </aside>
+{#              </div>#}
+{#            </section>#}
+{##}
+{#            <footer class="footer hidden-xs no-padder text-center-nav-xs">#}
+{#              <div class="bg hidden-xs ">#}
+{#                  <div class="dropdown dropup wrapper-sm clearfix">#}
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                      <span class="thumb-sm avatar pull-left m-l-xs">#}
+{#                        <img src="{% static "images/a3.png" %}" class="dker" alt="...">#}
+{#                        <i class="on b-black"></i>#}
+{#                      </span>#}
+{#                      <span class="hidden-nav-xs clear">#}
+{#                        <span class="block m-l">#}
+{#                          <strong class="font-bold text-lt">John.Smith</strong>#}
+{#                          <b class="caret"></b>#}
+{#                        </span>#}
+{#                        <span class="text-muted text-xs block m-l">Art Director</span>#}
+{#                      </span>#}
+{#                    </a>#}
+{#                    <ul class="dropdown-menu animated fadeInRight aside text-left">#}
+{#                      <li>#}
+{#                        <span class="arrow bottom hidden-nav-xs"></span>#}
+{#                        <a href="#">Settings</a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                        <a href="profile.html">Profile</a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                        <a href="#">#}
+{#                          <span class="badge bg-danger pull-right">3</span>#}
+{#                          Notifications#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                        <a href="docs.html">Help</a>#}
+{#                      </li>#}
+{#                      <li class="divider"></li>#}
+{#                      <li>#}
+{#                        <a href="modal.lockme.html" data-toggle="ajaxModal" >Logout</a>#}
+{#                      </li>#}
+{#                    </ul>#}
+{#                  </div>#}
+{#                </div>#}
+{#            </footer>#}
+{#          </section>#}
+{#        </aside>#}
         <!-- /.aside -->
-            <section class="vbox">
+            <section id="content" class="vbox padder-lg">
 
                {% block content %}
 
                {% endblock %}
 
-                <footer class="footer bg-dark">
-                    <div class="jp-video-270p" id="jp_container_N">
-                        <div class="jp-type-playlist">
-                            <div style="width: 480px; height: 270px;" id="jplayer_N" class="jp-jplayer hide">
-                                <img src="images/m0.jpg" style="width: 480px; height: 270px; display: inline;"
-                                     id="jp_poster_0">
-                                <audio title="Busted Chump"
-                                       src="http://flatfull.com/themes/assets/musics/adg3com_bustedchump.mp3"
-                                       preload="metadata" id="jp_audio_0"></audio>
-                                <video title="Busted Chump" style="width: 0; height: 0;"
-                                       preload="metadata" id="jp_video_0"></video>
-                            </div>
-                            <div class="jp-gui">
-                                <div style="display: block;" class="jp-video-play hide">
-                                    <a class="jp-video-play-icon">play</a>
-                                </div>
-                                <div class="jp-interface">
-                                    <div class="jp-controls">
-                                        <div><a class="jp-previous"><i
-                                                class="icon-control-rewind i-lg"></i></a></div>
-                                        <div>
-                                            <a style="display: inline-block;" class="jp-play"><i
-                                                    class="icon-control-play i-2x"></i></a>
-                                            <a style="display: none;" class="jp-pause hid"><i
-                                                    class="icon-control-pause i-2x"></i></a>
-                                        </div>
-                                        <div><a class="jp-next"><i class="icon-control-forward i-lg"></i></a>
-                                        </div>
-                                        <div class="hide"><a class="jp-stop"><i class="fa fa-stop"></i></a>
-                                        </div>
-                                        <div><a class="" data-toggle="dropdown" data-target="#playlist"><i
-                                                class="icon-list"></i></a></div>
-                                        <div class="jp-progress hidden-xs">
-                                            <div style="width: 0%;" class="jp-seek-bar dk">
-                                                <div style="width: 0%;" class="jp-play-bar bg-info">
-                                                </div>
-                                                <div style="display: none;" class="jp-title text-lt">Busted
-                                                    Chump
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted">
-                                            00:00
-                                        </div>
-                                        <div class="hidden-xs hidden-sm jp-duration text-xs text-muted">
-                                            00:00
-                                        </div>
-                                        <div class="hidden-xs hidden-sm">
-                                            <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>
-                                            <a style="display: none;" class="jp-unmute hid" title="unmute"><i
-                                                    class="icon-volume-off"></i></a>
-                                        </div>
-                                        <div class="hidden-xs hidden-sm jp-volume">
-                                            <div class="jp-volume-bar dk">
-                                                <div style="width: 80%;"
-                                                     class="jp-volume-bar-value lter"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <a class="jp-shuffle" title="shuffle"><i
-                                                    class="icon-shuffle text-muted"></i></a>
-                                            <a style="display: none;" class="jp-shuffle-off hid"
-                                               title="shuffle off"><i class="icon-shuffle text-lt"></i></a>
-                                        </div>
-                                        <div>
-                                            <a class="jp-repeat" title="repeat"><i
-                                                    class="icon-loop text-muted"></i></a>
-                                            <a style="display: none;" class="jp-repeat-off hid"
-                                               title="repeat off"><i class="icon-loop text-lt"></i></a>
-                                        </div>
-                                        <div class="hide">
-                                            <a class="jp-full-screen" title="full screen"><i
-                                                    class="fa fa-expand"></i></a>
-                                            <a style="display: none;" class="jp-restore-screen"
-                                               title="restore screen"><i
-                                                    class="fa fa-compress text-lt"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jp-playlist dropup" id="playlist">
-                                <ul style="display: block;" class="dropdown-menu aside-xl dker">
-                                    <li class="jp-playlist-current">
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;"
-                                                class="jp-playlist-item jp-playlist-current" tabindex="1">Busted
-                                            Chump <span class="jp-artist">by ADG3</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Chucked
-                                            Knuckles <span class="jp-artist">by 3studios</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Cloudless
-                                            Days <span class="jp-artist">by ADG3 Studios</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Core
-                                            Issues <span class="jp-artist">by Studios</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Cryptic
-                                            Psyche <span class="jp-artist">by ADG3</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Electro
-                                            Freak <span class="jp-artist">by Studios</span></a></div>
-                                    </li>
-                                    <li>
-                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a
-                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Freeform
-                                            <span class="jp-artist">by ADG</span></a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div style="display: none;" class="jp-no-solution hide">
-                                <span>Update Required</span>
-                                To play the media you will need to either update your browser to a recent
-                                version or update your <a href="http://get.adobe.com/flashplayer/"
-                                                          target="_blank">Flash plugin</a>.
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-
-              <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open"
-                 data-target="#nav,html"></a>
+{#                <footer class="footer bg-dark">#}
+{#                    <div class="jp-video-270p" id="jp_container_N">#}
+{#                        <div class="jp-type-playlist">#}
+{#                            <div style="width: 480px; height: 270px;" id="jplayer_N" class="jp-jplayer hide">#}
+{#                                <img src="images/m0.jpg" style="width: 480px; height: 270px; display: inline;"#}
+{#                                     id="jp_poster_0">#}
+{#                                <audio title="Busted Chump"#}
+{#                                       src="http://flatfull.com/themes/assets/musics/adg3com_bustedchump.mp3"#}
+{#                                       preload="metadata" id="jp_audio_0"></audio>#}
+{#                                <video title="Busted Chump" style="width: 0; height: 0;"#}
+{#                                       preload="metadata" id="jp_video_0"></video>#}
+{#                            </div>#}
+{#                            <div class="jp-gui">#}
+{#                                <div style="display: block;" class="jp-video-play hide">#}
+{#                                    <a class="jp-video-play-icon">play</a>#}
+{#                                </div>#}
+{#                                <div class="jp-interface">#}
+{#                                    <div class="jp-controls">#}
+{#                                        <div><a class="jp-previous"><i#}
+{#                                                class="icon-control-rewind i-lg"></i></a></div>#}
+{#                                        <div>#}
+{#                                            <a style="display: inline-block;" class="jp-play"><i#}
+{#                                                    class="icon-control-play i-2x"></i></a>#}
+{#                                            <a style="display: none;" class="jp-pause hid"><i#}
+{#                                                    class="icon-control-pause i-2x"></i></a>#}
+{#                                        </div>#}
+{#                                        <div><a class="jp-next"><i class="icon-control-forward i-lg"></i></a>#}
+{#                                        </div>#}
+{#                                        <div class="hide"><a class="jp-stop"><i class="fa fa-stop"></i></a>#}
+{#                                        </div>#}
+{#                                        <div><a class="" data-toggle="dropdown" data-target="#playlist"><i#}
+{#                                                class="icon-list"></i></a></div>#}
+{#                                        <div class="jp-progress hidden-xs">#}
+{#                                            <div style="width: 0%;" class="jp-seek-bar dk">#}
+{#                                                <div style="width: 0%;" class="jp-play-bar bg-info">#}
+{#                                                </div>#}
+{#                                                <div style="display: none;" class="jp-title text-lt">Busted#}
+{#                                                    Chump#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted">#}
+{#                                            00:00#}
+{#                                        </div>#}
+{#                                        <div class="hidden-xs hidden-sm jp-duration text-xs text-muted">#}
+{#                                            00:00#}
+{#                                        </div>#}
+{#                                        <div class="hidden-xs hidden-sm">#}
+{#                                            <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>#}
+{#                                            <a style="display: none;" class="jp-unmute hid" title="unmute"><i#}
+{#                                                    class="icon-volume-off"></i></a>#}
+{#                                        </div>#}
+{#                                        <div class="hidden-xs hidden-sm jp-volume">#}
+{#                                            <div class="jp-volume-bar dk">#}
+{#                                                <div style="width: 80%;"#}
+{#                                                     class="jp-volume-bar-value lter"></div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div>#}
+{#                                            <a class="jp-shuffle" title="shuffle"><i#}
+{#                                                    class="icon-shuffle text-muted"></i></a>#}
+{#                                            <a style="display: none;" class="jp-shuffle-off hid"#}
+{#                                               title="shuffle off"><i class="icon-shuffle text-lt"></i></a>#}
+{#                                        </div>#}
+{#                                        <div>#}
+{#                                            <a class="jp-repeat" title="repeat"><i#}
+{#                                                    class="icon-loop text-muted"></i></a>#}
+{#                                            <a style="display: none;" class="jp-repeat-off hid"#}
+{#                                               title="repeat off"><i class="icon-loop text-lt"></i></a>#}
+{#                                        </div>#}
+{#                                        <div class="hide">#}
+{#                                            <a class="jp-full-screen" title="full screen"><i#}
+{#                                                    class="fa fa-expand"></i></a>#}
+{#                                            <a style="display: none;" class="jp-restore-screen"#}
+{#                                               title="restore screen"><i#}
+{#                                                    class="fa fa-compress text-lt"></i></a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="jp-playlist dropup" id="playlist">#}
+{#                                <ul style="display: block;" class="dropdown-menu aside-xl dker">#}
+{#                                    <li class="jp-playlist-current">#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;"#}
+{#                                                class="jp-playlist-item jp-playlist-current" tabindex="1">Busted#}
+{#                                            Chump <span class="jp-artist">by ADG3</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Chucked#}
+{#                                            Knuckles <span class="jp-artist">by 3studios</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Cloudless#}
+{#                                            Days <span class="jp-artist">by ADG3 Studios</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Core#}
+{#                                            Issues <span class="jp-artist">by Studios</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Cryptic#}
+{#                                            Psyche <span class="jp-artist">by ADG3</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Electro#}
+{#                                            Freak <span class="jp-artist">by Studios</span></a></div>#}
+{#                                    </li>#}
+{#                                    <li>#}
+{#                                        <div><a href="javascript:;" class="jp-playlist-item-remove">×</a><a#}
+{#                                                href="javascript:;" class="jp-playlist-item" tabindex="1">Freeform#}
+{#                                            <span class="jp-artist">by ADG</span></a></div>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                            <div style="display: none;" class="jp-no-solution hide">#}
+{#                                <span>Update Required</span>#}
+{#                                To play the media you will need to either update your browser to a recent#}
+{#                                version or update your <a href="http://get.adobe.com/flashplayer/"#}
+{#                                                          target="_blank">Flash plugin</a>.#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </footer>#}
+{#              <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>#}
           </section>
       </section>
     </section>
   </section>
   <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/underscore-min.js" %}"></script>
+  <script src="{% static "js/backbone.js" %}"></script>
+  <script id="config" type="text/json">
+    {
+        "models": {},
+        "collections": {},
+        "views": {},
+        "router": null,
+        "apiRoot": "{% url 'api-root' %}",
+        "apiLogin": "{% url 'api-token' %}"
+    }
+</script>
   <!-- Bootstrap -->
   <script src="{% static "js/bootstrap.js"%}"></script>
   <!-- App -->
   <script src="{% static "js/app.js"%}"></script>
-  <script src="{% static "js/slimscroll/jquery.slimscroll.min.js"%}"></script>
-  <script src="{% static "js/masonry/tiles.min.js"%}"></script>
-  <script src="{% static "js/masonry/demo.js"%}"></script>
+  <script src="{% static "app/app.js"%}"></script>
+  <script src="{% static "app/models.js"%}"></script>
+  <script src="{% static "app/views.js"%}"></script>
+  <script src="{% static "app/router.js"%}"></script>
+  <script src="{% static "vendor/slimscroll/jquery.slimscroll.min.js"%}"></script>
   <script src="{% static "js/app.plugin.js"%}"></script>
-  <script type="text/javascript" src="{% static "js/jPlayer/jquery.jplayer.min.js"%}"></script>
-  <script type="text/javascript" src="{% static "js/jPlayer/add-on/jplayer.playlist.min.js"%}"></script>
-  <script type="text/javascript" src="{% static "js/jPlayer/demo.js" %}"></script>
+  <script type="text/javascript" src="{% static "vendor/jPlayer/jquery.jplayer.min.js"%}"></script>
+  <script type="text/javascript" src="{% static "vendor/jPlayer/add-on/jplayer.playlist.min.js"%}"></script>
+  <script type="text/javascript" src="{% static "vendor/jPlayer/demo.js" %}"></script>
 </body>
 </html>

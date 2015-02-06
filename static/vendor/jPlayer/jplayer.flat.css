@@ -190,7 +190,7 @@ a.jp-playlist-current:before{
 	.jp-playlist.open ul{
 		display: block !important;
 		bottom: 60px;
-		left: 0px;
-		right: 0px;
+		left: 0;
+		right: 0;
 	}
 }
